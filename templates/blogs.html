@@ -11,8 +11,15 @@
     <hr>
     {% for blog in all_blogs %}
     <div class="blog">
-        <p>{{ blog['title'] }} <br><i>({{ blog['content']}})</i></p>
+        <p>{{ blog['title'] }} <br><i>{{ blog['content']}}</i></p>
         <p>posted on: {{ blog['time'] }}</p>
+        <form method="POST" action="{{ url_for('delete', id=blog['_id']) }}">
+            <input type="submit" value="Delete Blog"
+                onclick="return confirm('Are you sure you want to delete this entry')">
+        </form>
+        <form method="POST" action="{{ url_for('update', id=blog['_id']) }}">
+            <input type="submit" value="Update Blog" onclick="return confirm('do you want to update the blog?')">
+        </form>
     </div>
     {% endfor %}
 </body>
