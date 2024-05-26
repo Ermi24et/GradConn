@@ -1,10 +1,10 @@
-from gradconn import app, gradconn, user_db
+from gradconn import app, gradconn, user_db, admin_db
 from flask import render_template, request, url_for, redirect, flash
 from bson.objectid import ObjectId
 from datetime import datetime
-from gradconn.forms import SignUpForm, SignInForm
+from gradconn.forms import SignUpForm, SignInForm, AdminSignInForm, AdminSignUpForm
 from flask_login import login_user, logout_user, login_required, current_user
-from gradconn.utils import hash_password, check_password
+from gradconn.utils import hash_password, check_password, check_name
 
 @app.route('/user/signup/', methods=['GET', 'POST'])
 def signup():
@@ -35,6 +35,32 @@ def signup():
 
     return render_template('register.html', form=form)
 
+@app.route('/admin/signup/', methods=['GET', 'POST'])
+def admin_signup():
+    form = AdminSignUpForm()
+    if form.validate_on_submit():
+        admin_email = {
+            "email": form.email.data
+        }
+        existing_admin = admin_db.find_one(admin_email)
+        if existing_admin:
+            flash('This admin already exists please sign in!')
+            return redirect(url_for('login'))
+        
+        name = form.name.data
+        email = form.email.data
+        password = form.password.data
+        hashed_password = hash_password(password)
+        admin_dict = {"name": name,
+                     "email": email,
+                     "password": hashed_password
+                     }
+
+        admin_db.insert_one(admin_dict)
+        admin_data = admin_db.find()
+        return render_template('admin_profile.html', admin_data=admin_data)
+    return render_template('admin_register.html', form=form)
+
 @app.route('/user/signin/', methods=['GET', 'POST'])
 def signin():
     form = SignInForm()
@@ -44,11 +70,28 @@ def signin():
         user_data = user_db.find_one({"email": email})
 
         if user_data and check_password(password, user_data['password']):
+            print(password, user_data['password'])
             return render_template('user_profile.html', user_data=user_data)
         else:
             error_msg = "Invalid email or password."
             return render_template('signin.html', form=form, error_msg=error_msg)
     return render_template('signin.html', form=form)
+
+@app.route('/admin/signin/', methods=['GET', 'POST'])
+def admin_signin():
+    form = AdminSignInForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+        admin_data = admin_db.find_one({"email": email})
+
+        if admin_data and check_password(password, admin_data['password']):
+            return render_template('admin_profile.html', admin_data=admin_data)
+        else:
+            error_msg = "Admin user not found."
+        return render_template('admin_signin.html', form=form, error_msg=error_msg)
+    return render_template('admin_signin.html', form=form)
+
 
 @app.route('/')
 def home():
