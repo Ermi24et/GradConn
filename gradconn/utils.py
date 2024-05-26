@@ -8,5 +8,10 @@ def hash_password(password):
 
     return hashed_password.decode('utf-8')
 
-def check_password(pwd1, pwd2):
-    return pwd1 == pwd2
+def check_password(password, hashed_password):
+    password_bytes = password.encode('utf-8')
+    hashed_password_bytes = hashed_password.encode('utf-8')
+    return bcrypt.checkpw(password_bytes, hashed_password_bytes)
+
+def check_name(name1, name2):
+    return name1 == name2
