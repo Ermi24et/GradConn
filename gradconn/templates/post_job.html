@@ -1,0 +1,63 @@
+{% extends "employer_layout.html" %}
+{% block content %}
+<h1>Post a Job</h1>
+<form method="'POST">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.position_title.label }}<br>
+        {{ form.position_title(size=32) }}
+    </p>
+    <p>
+        {{ form.contact-type.label }}<br>
+        {{ form.contract_type() }}
+    </p>
+    <p>
+        {{ form.working_condition.label }}<br>
+        {{ form.working_condition() }}
+    </p>
+    <p>
+        {{ form.type_of_vacancy.label }}<br>
+        {{ form.type_of_vacancy() }}
+    </p>
+    <p>
+        {{ form.organization_name.label }}<br>
+        {{ form.organization_name(size=32) }}
+    </p>
+    <p>
+        {{ form.organization_description.label }}<br>
+        {{ form.organization_description(rows=4, cols=40) }}
+    </p>
+    <p>
+        {{ form.job_description.label }}<br>
+        {{ form.job_description(rows=4, cols=40) }}
+    </p>
+    <p>
+        {{ form.required_education_experience.label }}<br>
+        {{ form.required_education_experience(rows=4, cols=40) }}
+    </p>
+    <p>
+        {{ form.skills.label }}<br>
+        {{ form.skills(rows=4, cols=40) }}
+    </p>
+    <p>
+        {{ form.how_to_apply.label }}<br>
+        {{ form.how_to_apply(rows=4, cols=40) }}
+    </p>
+    <p>
+        {{ form.disclaimer.label }}<br>
+        {{ form.disclaimer(rows=4, cols=40) }}
+    </p>
+    <p>
+        {{ form.location.label }}<br>
+        {{ form.location(size=32) }}
+    </p>
+    <p>
+        {{ form.deadline.label }}<br>
+        {{ form.deadline() }}
+    </p>
+    <p>
+        {{ for.submit() }}
+        <a href="{{ url_for('employer_dashboard') }}" class="btn btn-secondary">Cancel</a>
+    </p>
+</form>
+{% endblock %}

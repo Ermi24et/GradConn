@@ -1,0 +1,27 @@
+{% extends "employer_layout.html" %}
+{% block content %}
+<h1>Applicants for {{ job_posting.position_title }}</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Profile</th>
+            <th>Status</th>
+            <th>Actions</th>   
+        </tr>
+    </thead>
+    <tbody>
+        {% for applicant in applicants %}
+        <tr>
+            <td>{{ applicant.name }}</td>
+            <td><a href="{{ url_for('view_applicant', job_id=job_posting._id, applicant_id=applicant._id) }}">View Profile</a></td>
+            <td>{{ applicant.status }}</td>
+            <td>
+                <a href="{{ url_for('shortlist_applicant', job_id=job_posting._id, applicant_id=applicant._id) }}">Shortlist</a>
+                <a href="{{ url_for('mark_unsuccessful', job_id=job_posting._id, applicant_id=applicant._id) }}">Unsuccessful</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "employer_layout.html" %}
+{% block content %}
+<h1>Applicant: {{ applicant.name }}</h1>
+<p>Status: {{ applicant.status }}</p>
+<p><a href="{{ applicant.profile_url }}" download>Download Profile</a></p>
+<form method="POST">
+    <button name="status" value="shortlisted" type="submit">Shortlisted</button>
+    <button name="status" value="unsuccessful" type="submit">Unsuccessful</button>
+</form>
+{% endblock %}
