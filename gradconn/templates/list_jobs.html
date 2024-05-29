@@ -14,7 +14,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for job in job_postings %}
+        {% for job in list_jobs %}
         <tr>
             <td>{{ job.position_title }}</td>
             <td>{{ job.type_of_vacancy }}</td>
@@ -28,7 +28,8 @@
                 <form action="{{ url_for('delete_job', job_id=job._id) }}" method="POST" style="display:inline;">
                     <button type="submit">Delete</button>
                 </form>
-                <a href="{{ url_for('view_applicants', job_id=job._id) }}">Applicants ({{ job.applicants | length }})</a>
+                <a href="{{ url_for('view_applicants', job_id=job._id) }}">Applicants ({{ job.applicants | length
+                    }})</a>
             </td>
         </tr>
         {% endfor %}

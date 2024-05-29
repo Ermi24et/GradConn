@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block title %}
+Admin Profile
+{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('home') }}">home</a>
+<h1>This is Admin's page</h1>
+{% for admin in admin_data %}
+{{ admin['name'] }}
+{% endfor %}
+{% endblock %}

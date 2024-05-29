@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block title %}
+Blog Form
+{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('home') }}">home</a>
+<h1>Blog</h1>
+<hr>
+<div class="content">
+    <form method="post">
+        <p>
+            <b><label for="title">title</label></b>
+        </p>
+        <p>
+            <input type="text" name="title" placeholder="blog title"></input>
+        </p>
+        <p>
+            <b><label for="content">content</label></b>
+        </p>
+        <p>
+        <div class="form-control">
+            <textarea id="message" cols="60" rows="10" name="content" placeholder="Enter Your Message" name="message"
+                class="input-field" required></textarea>
+        </div>
+        </p>
+        <button type="submit">Create</button>
+    </form>
+</div>
+{% endblock %}

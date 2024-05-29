@@ -3,11 +3,13 @@
 Employer Dashboard
 {% endblock %}
 {% block content %}
-<h1>Welcome, {{ organization_name }}</h1>
+<h1>Welcome</h1>
 <p>
-    Embrace the power of fresh graduates to ignite innovation and propel your company into the future. Seize the opportunity to harness their potential and transform your organization's trajectory today.
+    Embrace the power of fresh graduates to ignite innovation and propel your company into the future. Seize the
+    opportunity to harness their potential and transform your organization's trajectory today.
 </p>
-<nav>
+{% endblock %}
+<!-- <nav>
     <ul>
         <li><a href="{{ url_for('employer_profile') }}">Profile</a></li>
         <li><a href="{{ url_for('post_job') }}">Post Job</a></li>
@@ -26,5 +28,4 @@ Employer Dashboard
         <input type="text" id="skills" name="skills">
     </p>
     <button type="submit">Search</button>
-</form>
-{% endblock %}
+</form> -->
