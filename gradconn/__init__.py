@@ -10,5 +10,6 @@ db = client.flask_db
 gradconn = db.gradconn
 user_db = db.user_db
 admin_db = db.admin_db
+job_db = db.job_db
 
 from gradconn import routes

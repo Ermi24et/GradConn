@@ -1,9 +1,8 @@
-from gradconn import app, gradconn, user_db, admin_db
-from flask import render_template, request, url_for, redirect, flash
+from gradconn import app, gradconn, user_db, admin_db, job_db
+from flask import render_template, request, url_for, redirect, flash, jsonify
 from bson.objectid import ObjectId
 from datetime import datetime
-from gradconn.forms import SignUpForm, SignInForm, AdminSignInForm, AdminSignUpForm
-from flask_login import login_user, logout_user, login_required, current_user
+from gradconn.forms import SignUpForm, SignInForm, AdminSignInForm, AdminSignUpForm, JobForm, EmployeesSearchForm
 from gradconn.utils import hash_password, check_password, check_name
 
 @app.route('/user/signup/', methods=['GET', 'POST'])
@@ -114,12 +113,10 @@ def volunteer():
     return render_template('volunteer.html')
 
 @app.route('/employer/dashboard/')
-@login_required
 def employer_dashboard():
     return render_template('employer_dashboard.html')
 
 @app.route('/employer/post_job/', methods=['GET', 'POST'])
-@login_required
 def post_job():
     form = JobForm()
     if form.validate_on_submit():
@@ -145,14 +142,12 @@ def post_job():
         return redirect(url_for('employer_dashboard'))
     return render_template('post_job.html', form=form)
 
-@app.route('/employer/list_jobs/')
-@login_required
-def list_jobs():
-    jobs = job_db.find({"organization_name": current_user.organization_name})
+@app.route('/employer/list_jobs/<job_id>/')
+def list_jobs(job_id):
+    jobs = job_db.find({"_id": job_id})
     return render_template('list_jobs.html', jobs=jobs)
 
 @app.route('/employer/job/<job_id>/update/', methods=['GET', 'POST'])
-@login_required
 def update_job(job_id):
     job = job_db.find_one({'_id': ObjectId(job_id)})
     form = JobForm(obj=job)
@@ -171,27 +166,24 @@ def update_job(job_id):
             'updated-date': datetime.utcnow(),
             'deadline_date': form.deadline_date.data,
         }
-        job_db.update_one({"_id": ObjectId(job_id)}, {'$set': updated_job})
+        job_db.update_one({"_id": ObjectId(job_id)}, {'$set': update_job})
         flash('Job updated successfully', 'success')
-        return redirect(url_for('list_jobs'))
+        return redirect(url_for('list_jobs', job_id=job_id))
     return render_template('update_job.html', form=form, job_id=job_id)
 
 @app.route('/employer/job/<job_id>/delete/', methods=['POST'])
-@login_required
 def delete_job(job_id):
-    job_db.delete_one("_id": ObjectId(job_id)})
+    job_db.delete_one({"_id": ObjectId(job_id)})
     flash('Job deleted successfully', 'success')
-    return redirect(url_for('list_jobs'))
+    return redirect(url_for('list_jobs', job_id=job_id))
 
 @app.route('/employer/job/<job_id>/applicants/')
-@login_required
 def view_applicants(job_id):
     job = job_db.find_one({"_id": ObjectId(job_id)})
     applicants = job.get('applicants', [])
-    return return-template('view_applicants.html', job=job, applicants=applicants)
+    return render_template('view_applicants.html', job=job, applicants=applicants)
 
 @app.route('/employer/job/<job_id>/applicant/<applicant_id>/')
-@login_required
 def view_applicant(job_id, applicant_id):
     job = job_db.find_one({"_id": ObjectId(job_id)})
     applicant = next((a for a in job['applicant'] if str(a['_id']) == applicant_id), None)
@@ -201,7 +193,6 @@ def view_applicant(job_id, applicant_id):
     return redirect(url_for('view_applicants', job_id=job_id))
 
 @app.route('/employer/job/<job_id>/applicant/<applicant_id>/download/')
-@login_required
 def download_applicant(job_id, applicant_id):
     job = job_db.find_one({"_id": ObjectId(job_id)})
     applicant = next(( a for a in job['applicants'] if str(a['_id']) == applicant_id), None)
@@ -211,14 +202,13 @@ def download_applicant(job_id, applicant_id):
     return redirect(url_for('view_applicants', job_id=job_id))
 
 @app.route('/employer/job/<job_id>/applicant/<applicant_id>/status/', methods=['POST'])
-@login_required
 def update_applicant_status(job_id, applicant_id):
     job = job_db.find_one({"_id": ObjectId(job_id)})
     applicant = next(( a for a in job['applicants'] if str(a['_id']) == applicant_id), None)
     if applicant:
         status = request.form.get('status')
         for app in job['applicants']:
-            if str(app('_id']) == applicant_id:
+            if str(app['_id']) == applicant_id:
                 app['status'] = status
         job_db.update_one({"_id": ObjectId(job_id)}, {'$set': {'applicants': job['applicants']}})
         flash('Applicant status updated successfully', 'success')
@@ -227,9 +217,8 @@ def update_applicant_status(job_id, applicant_id):
     return redirect(url_for('view-applicants', job_id=job_id))
 
 @app.route('/employer/search_employees/', methods=['GET', 'POST'])
-@login_required
 def search_employees():
-    from = EmployeesSeacrhForm()
+    form = EmployeesSearchForm()
     employees = []
     if form.validate_on_submit():
         education = form.education.data
@@ -239,25 +228,24 @@ def search_employees():
             query['education'] = {'$regex': education, '$options': 'i'}
         if skills:
             query['skills'] = {'$regex': skills, '$options': 'i'}
-        employees = employee-db.find(query)
+        employees = user_db.find(query)
     return render_template('search_employees.html', form=form, employees=employees)
 
 @app.route('employer/profile/')
-@login_required
 def employer_profile():
-    profile_data = current_user
+    profile_data = admin_db.find()
     return render_template('employer_profile.html', profile=profile_data)
 
 @app.route('/employer/settings/', methods=['GET', 'POST'])
-@login_required
 def employer_settings():
     if request.method == 'POST':
         new_password = request.form.get('new_password')
-        confirm-password = request.form.get('confirm_password')
-        if new_password and new_apassword == confirm_password:
+        confirm_password = request.form.get('confirm_password')
+        if new_password and new_password == confirm_password:
             hashed_password = hash_password(new_password)
-            user_db.update_one({'_id': current_user._id}, {'$set': {'password': hashed_password}})
-            flasj('Password updated successfully', 'success')
+            admin_data = admin_db.find_one()
+            admin_db.update_one({'_id': admin_data["_id"]}, {'$set': {'password': hashed_password}})
+            flash('Password updated successfully', 'success')
         else:
             flash('Passwords do not match', 'danger')
     return render_template('employer_settings.html')
@@ -272,7 +260,6 @@ def blogs_form():
         return redirect(url_for('blogs', title=title, content=content, time=time))
     
     return render_template('blog_form.html')
-
 
 @app.post('/<id>/delete/')
 def delete(id):

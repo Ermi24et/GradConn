@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WellCome</title>
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">  
 </head>
 <body>
@@ -18,7 +22,6 @@
                     <a href="{{ url_for('list_jobs') }}">List of Posted jobs</a>
                     <a href="{{ url_for('search_employees') }}">Search Employees</a>
                     <a href="{{ url_for('employer_settings') }}">Setting</a>
-                    <a href="#">Help Center</a>
                     <a href="#">Logout</a>
                 </div>
             </li>

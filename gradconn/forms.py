@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, IntegerField, TextAreaField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, IntegerField, TextAreaField, SelectField, DateField
 from wtforms.validators import Length, EqualTo, Email, InputRequired, ValidationError
 
 
@@ -29,15 +29,15 @@ class AdminSignInForm(FlaskForm):
     submit = SubmitField('Sign In')
 
 class JobForm(FlaskForm):
-    position_title = StringField('Position Title', validators=[DataRequired()])
-    contract_type = StringField('Contract Type', validators=[DataRequired()])
-    working_condition = SelectField('Working Condition', choices=[('Remote', 'Remote'), ('Hybrid', 'Hybrid'), ('On Site', 'On Site')], validators=[DataRequired()])
-    type_of_vacancy = SelectField('Type of Vacancy', choices=[('Volunteer', 'Volunteer'), ('Internship', 'Internship'), ('Fellowship', 'Fellowship')], validators=[DataRequired()])
-    organization_description = TextAreaField('Organization Description', validators=[DataRequired()])
-    job_description = TextAreaField('Job Description', validators=[DataRequired])
-    required_education_experience = TextAreaField('Required Education & Experience', validators=[DataRequired()])
-    skills = TextAreaField('Skills', validators=[DataRequired()])
-    how_to_apply = TextAreaField('How to Apply', validators=[DataRequired()])
-    disclaimer = TextAreaField('Disclaimer', validators=[DataRequired()])
-    deadline_date = DateField('Application Deadline', format='%Y-%m-%d', validators=[DataRequired()])
+    position_title = StringField('Position Title', validators=[InputRequired()])
+    contract_type = StringField('Contract Type', validators=[InputRequired()])
+    working_condition = SelectField('Working Condition', choices=[('Remote', 'Remote'), ('Hybrid', 'Hybrid'), ('On Site', 'On Site')], validators=[InputRequired()])
+    type_of_vacancy = SelectField('Type of Vacancy', choices=[('Volunteer', 'Volunteer'), ('Internship', 'Internship'), ('Fellowship', 'Fellowship')], validators=[InputRequired()])
+    organization_description = TextAreaField('Organization Description', validators=[InputRequired()])
+    job_description = TextAreaField('Job Description', validators=[InputRequired])
+    required_education_experience = TextAreaField('Required Education & Experience', validators=[InputRequired()])
+    skills = TextAreaField('Skills', validators=[InputRequired()])
+    how_to_apply = TextAreaField('How to Apply', validators=[InputRequired()])
+    disclaimer = TextAreaField('Disclaimer', validators=[InputRequired()])
+    deadline_date = DateField('Application Deadline', format='%Y-%m-%d', validators=[InputRequired()])
     submit = SubmitField('Post Job')
