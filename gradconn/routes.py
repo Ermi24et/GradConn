@@ -128,12 +128,13 @@ def post_job():
             'organization_name': form.organization_name.data,
             'organization_description': form.organization_description.data,
             'job_description': form.job_description.data,
+            'location': form.location.data,
             'required_education_experience': form.required_education_experience.data,
             'skills': form.skills.data,
             'how_to_apply': form.how_to_apply.data,
             'disclaimer': form.disclaimer.data,
-            'posted_data': datetime.utcnow(),
-            'updated_date': datetime.utcnow(),
+            'posted_data': datetime.now().strftime('%Y-%m-%d %T %p'),
+            'updated_date': datetime.now().strftime('%Y-%m-%d %T %p'),
             'deadline_date': form.deadline_date.data,
             'applicants': []
         }
@@ -142,10 +143,10 @@ def post_job():
         return redirect(url_for('employer_dashboard'))
     return render_template('post_job.html', form=form)
 
-@app.route('/employer/list_jobs/<job_id>/')
-def list_jobs(job_id):
-    jobs = job_db.find({"_id": job_id})
-    return render_template('list_jobs.html', jobs=jobs)
+@app.route('/employer/list_jobs/')
+def list_jobs():
+    # jobs = job_db.find({"_id": job_id})
+    return render_template('list_jobs.html')
 
 @app.route('/employer/job/<job_id>/update/', methods=['GET', 'POST'])
 def update_job(job_id):
@@ -163,7 +164,7 @@ def update_job(job_id):
             'skills': form.skills.data,
             'how_to_apply': form.how_to_apply.data,
             'disclaimer': form.disclaimer.data,
-            'updated-date': datetime.utcnow(),
+            'updated-date': datetime.now().strftime('%Y-%m-%d %T %p'),
             'deadline_date': form.deadline_date.data,
         }
         job_db.update_one({"_id": ObjectId(job_id)}, {'$set': update_job})
@@ -231,7 +232,7 @@ def search_employees():
         employees = user_db.find(query)
     return render_template('search_employees.html', form=form, employees=employees)
 
-@app.route('employer/profile/')
+@app.route('/employer/profile/')
 def employer_profile():
     profile_data = admin_db.find()
     return render_template('employer_profile.html', profile=profile_data)
