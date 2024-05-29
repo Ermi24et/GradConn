@@ -1,0 +1,9 @@
+{% extends "employer_layout.html" %}
+{% block title %}
+Employer Profile
+{% endblock %}
+{% block content %}
+{% for admin in profile %}
+{{ admin['name'] }}
+{% endfor %}
+{% endblock %}
