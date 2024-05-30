@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block title %}
+Blog Posts
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    {% for blog in all_blogs %}
+    <div class="blog-post">
+        <h2>{{ blog['title'] }} </h2>
+        <p><i>{{ blog['content']}}</i></p>
+        <p>posted on: {{ blog['time'] }}</p>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

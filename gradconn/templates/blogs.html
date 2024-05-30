@@ -1,27 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "layout.html" %}
+{% block title %}
+Blog Posts
+{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Posts</title>
-</head>
-
-<body>
-    <hr>
+{% block content %}
+<div class="content">
     {% for blog in all_blogs %}
-    <div class="blog">
-        <p>{{ blog['title'] }} <br><i>{{ blog['content']}}</i></p>
+    <div class="blog-post">
+        <h2>{{ blog['title'] }} </h2>
+        <p><i>{{ blog['content']}}</i></p>
         <p>posted on: {{ blog['time'] }}</p>
-        <form method="POST" action="{{ url_for('delete', id=blog['_id']) }}">
-            <input type="submit" value="Delete Blog"
-                onclick="return confirm('Are you sure you want to delete this entry')">
-        </form>
-        <form method="POST" action="{{ url_for('update', id=blog['_id']) }}">
-            <input type="submit" value="Update Blog" onclick="return confirm('do you want to update the blog?')">
-        </form>
+        <div class="form-container">
+            <form method="POST" action="{{ url_for('delete', id=blog['_id']) }}">
+                <input type="submit" value="Delete Blog" class="btn btn-outline-primary"
+                    onclick="return confirm('Are you sure you want to delete this entry')">
+            </form>
+            <form method="POST" action="{{ url_for('update', id=blog['_id']) }}">
+                <input type="submit" value="Update Blog" class="btn btn-outline-primary"
+                    onclick="return confirm('do you want to update the blog?')">
+            </form>
+        </div>
     </div>
-    {% endfor %}
-</body>
-
-</html>
+</div>
+{% endfor %}
+{% endblock %}

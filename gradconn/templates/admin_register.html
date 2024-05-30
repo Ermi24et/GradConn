@@ -65,34 +65,9 @@ Register Admin
             </p>
             <div class="checkbox mb-3">
                 <h6>Already have an account?</h6>
-                <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin_signin') }}">Sign In</a>
+                <a class="btn btn-outline-primary" href="{{ url_for('admin_signin') }}">Sign In</a>
             </div>
         </form>
     </div>
 </div>
-<!--<div class="card-wrapper">
-    <div class="card">
-        <h1 class="center">Create an Account</h1>
-        <form name="signup_form">
-            <label for="first_name">First Name</label>
-            <input type="text" name="first_name" class="field" required>
-
-            <label for="last_name">Last Name</label>
-            <input type="text" name="last_name" class="field" required>
-
-            <label for="email">Email</label>
-            <input type="email" name="email" class="field" required>
-
-            <label for="password">Password</label>
-            <input type="password" name="password" class="field" required>
-
-            <label for="confirm_password">Confirm Password</label>
-            <input type="password" name="confirm_password" class="field" required>
-
-            <p class="error error-hidden"></p>
-
-            <input type="submit" value="Sign Up" class="btn">
-        </form>
-    </div>
-</div>-->
 {% endblock %}

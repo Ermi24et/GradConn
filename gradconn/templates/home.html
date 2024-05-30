@@ -1,7 +1,73 @@
 {% extends "layout.html" %}
-{% block title %}
-Home
-{% endblock %}
-{% block content %}
 
+{% block title %}
+Home - GradConnect
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <h1>GradConnect</h1>
+        <div class="content">
+            <p
+                style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                Connecting graduates with exciting opportunities.</p><br>
+            <p
+                style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                A platform designed to help graduates find
+                their dream jobs and connect with potential
+                employers.</p>
+        </div>
+        <div class="buttons">
+            <a href="{{ url_for('signin') }}" class="btn btn-primary">Get Started</a>
+            <a href="{{ url_for('admin_signin') }}" class="btn btn-outline-primary">I'm Hiring</a>
+        </div>
+    </div>
+</section>
+<section class="contact-us">
+    <hr>
+    <div class="container">
+        <h2>Contact Us</h2>
+        <form action="{{ url_for('contact') }}" method="POST">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" class="form-control" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Send Message</button>
+        </form>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h4>About GradConnect</h4>
+                <p>GradConnect is a platform dedicated to helping graduates find their dream jobs and connect with
+                    potential employers.</p>
+            </div>
+            <div class="col-md-6">
+                <h4>Contact Information</h4>
+                <ul>
+                    <li>Email: support@gradconnect.com</li>
+                    <li>Phone: +123-456-7890</li>
+                    <li>Address: 123 Main Street, City, Country</li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 text-center">
+                <p>&copy; 2024 GradConnect. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+</footer>
 {% endblock %}
