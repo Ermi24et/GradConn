@@ -1,30 +1,28 @@
 {% extends "layout.html" %}
 {% block title %}
-Blog Form
+Create Blog
 {% endblock %}
 
 {% block content %}
-<a href="{{ url_for('home') }}">home</a>
-<h1>Blog</h1>
 <hr>
-<div class="content">
-    <form method="post">
-        <p>
-            <b><label for="title">title</label></b>
-        </p>
-        <p>
-            <input type="text" name="title" placeholder="blog title"></input>
-        </p>
-        <p>
-            <b><label for="content">content</label></b>
-        </p>
-        <p>
-        <div class="form-control">
-            <textarea id="message" cols="60" rows="10" name="content" placeholder="Enter Your Message" name="message"
-                class="input-field" required></textarea>
-        </div>
-        </p>
-        <button type="submit">Create</button>
-    </form>
+<div class="card-wrapper">
+    <div class="card">
+        <h5>Create Blog</h5>
+        <hr>
+        <form method="post">
+            <div class="field">
+                <b><label for="title">Title</label></b>
+                <input type="text" name="title" placeholder="Blog Title" class="field-input">
+            </div>
+            <div class="field">
+                <b><label for="content">Content</label></b>
+                <textarea id="message" cols="60" rows="10" name="content" placeholder="Enter Your Message"
+                    class="input-field" required></textarea>
+            </div>
+            <div class="center">
+                <button type="submit" class="btn btn-outline-primary">Create</button>
+            </div>
+        </form>
+    </div>
 </div>
 {% endblock %}

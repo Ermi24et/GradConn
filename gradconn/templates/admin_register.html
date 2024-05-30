@@ -4,10 +4,9 @@ Register Admin
 {% endblock %}
 
 {% block content %}
-<a href="{{ url_for('home') }}">home</a>
 <div class="card-wrapper">
     <div class="card">
-        <h1 class="center">Create an Account For Admin</h1>
+        <h5 class="center">Dear Employer Please Create Your Account</h5>
         <form method="POST" action="/admin/signup/" name="signup_form">
             {{ form.csrf_token }}
             <div class="field">
@@ -62,11 +61,11 @@ Register Admin
                 {% endif %}
             </div>
             <p>
-                <input type="submit" value="Sign Up" class="btn">
+                <input type="submit" value="Sign Up" class="btn btn-outline-primary">
             </p>
             <div class="checkbox mb-3">
                 <h6>Already have an account?</h6>
-                <a class="btn btn-sm btn-secondary" href="{{ url_for('admin_signin') }}">Sign In</a>
+                <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin_signin') }}">Sign In</a>
             </div>
         </form>
     </div>

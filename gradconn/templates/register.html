@@ -4,10 +4,9 @@ Register User
 {% endblock %}
 
 {% block content %}
-<a href="{{ url_for('home') }}">home</a>
 <div class="card-wrapper">
     <div class="card">
-        <h1 class="center">Create an Account</h1>
+        <h5 class="center">Create an Account</h5>
         <form method="POST" action="/user/signup/" name="signup_form">
             {{ form.csrf_token }}
             <div class="field">

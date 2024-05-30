@@ -1,38 +1,16 @@
 {% extends "employer_layout.html" %}
 {% block content %}
 <h1>List of Posted Jobs</h1>
-<table>
-    <thead>
-        <tr>
-            <th>Position Title</th>
-            <th>Type of Vacancy</th>
-            <th>Location</th>
-            <th>Posted Date</th>
-            <th>Updated Date</th>
-            <th>Deadline</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for job in list_jobs %}
-        <tr>
-            <td>{{ job.position_title }}</td>
-            <td>{{ job.type_of_vacancy }}</td>
-            <td>{{ job.location }}</td>
-            <td>{{ job.posted_date }}</td>
-            <td>{{ job.updated_date }}</td>
-            <td>{{ job.deadline }}</td>
-            <td>
-                <a href="{{ url_for('update_job', job_id=job._id) }}">Update</a>
-                <a href="{{ url_for('employer_dashboard') }}" class="btn btn-secondary">Cancel</a>
-                <form action="{{ url_for('delete_job', job_id=job._id) }}" method="POST" style="display:inline;">
-                    <button type="submit">Delete</button>
-                </form>
-                <a href="{{ url_for('view_applicants', job_id=job._id) }}">Applicants ({{ job.applicants | length
-                    }})</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+{% for job in job_data %}
+<h3>Position Title:</h3>
+{{ job['position_title'] }}
+<h4>Type Of Vacancy:</h4>
+{{ job['type_of_vacancy'] }}
+<h4>Location:</h4>
+{{ job['location'] }}
+<h4>Updated Date:</h4>
+{{ job['updated_date'] }}
+<h4>Deadline:</h4>
+{{ job['deadline_date'] }}
+{% endfor %}
 {% endblock %}

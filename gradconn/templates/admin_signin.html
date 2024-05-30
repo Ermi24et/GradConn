@@ -6,7 +6,7 @@ Admin Sign In
 {% block content %}
 <div class="card-wrapper">
     <div class="card">
-        <h1 class="center">Admin Sign In</h1>
+        <h5 class="center">Dear Employer Please Sign In</h5>
         <form method="POST" action="/admin/signin/" name="signin_form">
             {{ form.csrf_token }}
             <div class="field">
@@ -35,14 +35,14 @@ Admin Sign In
                 {% endif %}
             </div>
             <p>
-                <input type="submit" value="Sign In" class="btn">
+                <input type="submit" value="Sign In" class="btn btn-outline-primary">
             </p>
             {% if error_msg %}
             <p style="color: red;">{{ error_msg }}</p>
             {% endif %}
             <div class="checkbox mb-3">
                 <h6>Do not have an account?</h6>
-                <a class="btn btn-sm btn-secondary" href="{{ url_for('admin_signup') }}">Sign Up</a>
+                <a class="btn btn-outline-primary" href="{{ url_for('admin_signup') }}">Sign Up</a>
             </div>
         </form>
     </div>
