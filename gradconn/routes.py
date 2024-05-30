@@ -124,7 +124,7 @@ def post_job():
             'position_title': form.position_title.data,
             'contract_type': form.contract_type.data,
             'working_codition': form.working_condition.data,
-            'types_of_vacancy': form.types_of_vacancy.data,
+            'type_of_vacancy': form.type_of_vacancy.data,
             'organization_name': form.organization_name.data,
             'organization_description': form.organization_description.data,
             'job_description': form.job_description.data,
@@ -135,18 +135,18 @@ def post_job():
             'disclaimer': form.disclaimer.data,
             'posted_data': datetime.now().strftime('%Y-%m-%d %T %p'),
             'updated_date': datetime.now().strftime('%Y-%m-%d %T %p'),
-            'deadline_date': form.deadline_date.data,
+            'deadline_date': form.deadline_date.data.strftime('%Y-%m-%d'),
             'applicants': []
         }
         job_db.insert_one(job_posting)
         flash('Job posting created successfully', 'success')
-        return redirect(url_for('employer_dashboard'))
+        return redirect(url_for('list_jobs'))
     return render_template('post_job.html', form=form)
 
 @app.route('/employer/list_jobs/')
 def list_jobs():
-    # jobs = job_db.find({"_id": job_id})
-    return render_template('list_jobs.html')
+    job_data = job_db.find()
+    return render_template('list_jobs.html', job_data=job_data)
 
 @app.route('/employer/job/<job_id>/update/', methods=['GET', 'POST'])
 def update_job(job_id):
@@ -258,7 +258,8 @@ def blogs_form():
         title = request.form['title']
         content = request.form['content']
         time = datetime.now().strftime('%Y-%m-%d %T %p')
-        return redirect(url_for('blogs', title=title, content=content, time=time))
+        gradconn.insert_one({'title': title, 'content': content, 'time': time})
+        return redirect(url_for('blog_posts'))
     
     return render_template('blog_form.html')
 
@@ -277,24 +278,27 @@ def update_blog(id):
         title = request.form['title']
         content = request.form['content']
         time = datetime.now().strftime('%Y-%m-%d %T %p')
-        return redirect(url_for('blogs', title=title, content=content, time=time))
+        gradconn.insert_one({'title': title, 'content': content, 'time': time})
+        return redirect(url_for('blog_posts'))
     
     all_blogs = gradconn.find_one({"_id": ObjectId(id)})
     gradconn.delete_one({"_id": ObjectId(id)})
-
     return render_template('update_blog.html', all_blogs=all_blogs)
-
-@app.route('/blogs/<title>/<content>/<time>/')
-def blogs(title, content, time):
-    gradconn.insert_one({'title': title, 'content': content, 'time': time})
-    all_blogs = gradconn.find()
-    return render_template('blogs.html', all_blogs=all_blogs)
 
 @app.route('/blog_posts/')
 def blog_posts():
     all_blogs = gradconn.find()
     return render_template('blogs.html', all_blogs=all_blogs)
 
+@app.route('/blogs/')
+def all_blog():
+    all_blogs = gradconn.find()
+    return render_template('user_blog.html', all_blogs=all_blogs)
+
 @app.route('/contact/')
 def contact():
     return render_template('contact.html')
+
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    return render_template('home.html')
