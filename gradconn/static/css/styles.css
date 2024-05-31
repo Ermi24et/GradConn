@@ -193,7 +193,6 @@ hr {
     text-align: center;
 }
 
-/* added code below this for the home page*/
 .hero {
     background-image: url("https://hips.hearstapps.com/hmg-prod/images/graduation-day-royalty-free-image-1647266748.jpg");
     padding: 50px 0;
@@ -228,7 +227,6 @@ hr {
     text-align: center;
 }
 
-/* added footer code */
 .footer {
     background-color: #f8f9fa;
     padding: 20px 0;
@@ -253,4 +251,41 @@ hr {
 
 .footer li {
     margin-bottom: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th,
+td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.insert-image {
+    background-image: url("https://thefuturedge.com/wp-content/uploads/2023/04/iStock-954307646_dtvwxe.webp");
+    padding: 50px 0;
+    text-align: center;
+    width: 60%;
+    height: 400px;
+}
+
+.insert-image-user {
+    background-image: url("https://media.istockphoto.com/id/1362265241/photo/business-people-in-the-office.jpg?s=612x612&w=0&k=20&c=b7HXF98Egp0ls04tsRz45-5NWYTwpCPMUswYTdkecD8=");
+    padding: 50px 0;
+    text-align: center;
+    width: 60%;
+    height: 400px;
 }
