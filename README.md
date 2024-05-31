@@ -25,7 +25,7 @@
 # clone our repository
 $ git clone https://github.com/Ermi24et/GradConn.git
 # get into the repository
-$ cd GRADCONN
+$ cd GradConn
 # create a virtual environment
 $ python3 -m venv .venv
 # activate your virtual environment
