@@ -1,16 +1,29 @@
-{% extends "employer_layout.html" %}
+{% extends "layout.html" %}
 {% block content %}
-<h1>List of Posted Jobs</h1>
-{% for job in job_data %}
-<h3>Position Title:</h3>
-{{ job['position_title'] }}
-<h4>Type Of Vacancy:</h4>
-{{ job['type_of_vacancy'] }}
-<h4>Location:</h4>
-{{ job['location'] }}
-<h4>Updated Date:</h4>
-{{ job['updated_date'] }}
-<h4>Deadline:</h4>
-{{ job['deadline_date'] }}
-{% endfor %}
+<hr>
+<h5 style="font-family: Verdana, Geneva, Tahoma, sans-serif;">List of Posted Jobs</h5>
+
+<table border="1" cellpadding="10" cellspacing="0" style="width:100%; border-collapse:collapse; margin-top:20px;">
+    <thead>
+        <tr style="background-color:#f2f2f2;">
+            <th>Position Title</th>
+            <th>Type of Vacancy</th>
+            <th>Location</th>
+            <th>Updated Date</th>
+            <th>Deadline</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for job in job_data %}
+        <tr>
+            <td>{{ job['position_title'] }}</td>
+            <td>{{ job['type_of_vacancy'] }}</td>
+            <td>{{ job['location'] }}</td>
+            <td>{{ job['updated_date'] }}</td>
+            <td>{{ job['deadline_date'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 {% endblock %}

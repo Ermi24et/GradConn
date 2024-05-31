@@ -1,15 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "user_layout.html" %}
+{% block title %}
+Internships
+{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+{% block content %}
+<h5>This is Internships Page</h5>
 
-<body>
-    <a href="{{ url_for('home') }}">home</a>
-    <h1>This is internships page</h1>
-</body>
+<table boarder="1" cellpadding="10" cellspacing="collapse:collapse;">
+    <thead>
+        <tr>
+            <th>Position Title</th>
+            <th>Working Condition</th>
+            <th>Organization Name</th>
+            <th>Job Description</th>
+            <th>Location</th>
+            <th>Required Education & Experience</th>
+            <th>Skills</th>
+            <th>How to Apply</th>
+            <th>Deadline Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for job in jobs %}
+        <tr>
+            <td>{{ job.position_title }}</td>
+            <td>{{ job.working_condition }}</td>
+            <td>{{ job.organization_name }}</td>
+            <td>{{ job.job_description }}</td>
+            <td>{{ job.location }}</td>
+            <td>{{ job.required_education_experience }}</td>
+            <td>{{ job.skills }}</td>
+            <td>{{ job.how_to_apply }}</td>
+            <td>{{ job.deadline_date }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
-</html>
+{% endblock %}

@@ -4,6 +4,16 @@ Employer Profile
 {% endblock %}
 {% block content %}
 {% for admin in profile %}
-{{ admin['name'] }}
+<hr>
+<div class="content">
+    <h5>Welcome {{ admin['name'] }}</h5>
+    <p>GradConn Helps You To Find Talented Individuals Through Internships, Fellowships, Voluntaries, And Adapt Those
+        Individuals To Real World Work Space And Solve The Job Scarcity Of Their Country. You Can Navigate Through The
+        Bars
+        To Create A Blog, Post A Job, And Also Easily Search Employees.</p>
+</div>
+<div class="insert-image">
+    <p></p>
+</div>
 {% endfor %}
 {% endblock %}
