@@ -9,7 +9,7 @@ client = MongoClient('localhost', 27017)
 db = client.flask_db
 gradconn = db.gradconn
 user_db = db.user_db
-admin_db = db.admin_db
+employer_db = db.employer_db
 job_db = db.job_db
 
 from gradconn import routes
