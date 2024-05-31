@@ -1,9 +1,9 @@
-from gradconn import app, gradconn, user_db, admin_db, job_db
+from gradconn import app, gradconn, user_db, employer_db, job_db
 from flask import render_template, request, url_for, redirect, flash, jsonify
 from bson.objectid import ObjectId
 from datetime import datetime
 from gradconn.forms import SignUpForm, SignInForm, AdminSignInForm, AdminSignUpForm, JobForm, EmployeesSearchForm
-from gradconn.utils import hash_password, check_password, check_name
+from gradconn.utils import hash_password, check_password
 
 @app.route('/user/signup/', methods=['GET', 'POST'])
 def signup():
@@ -29,19 +29,21 @@ def signup():
                      }
 
         user_db.insert_one(user_dict)
-        user_data = user_db.find()
-        return render_template('user_profile.html', user_data=user_data)
+        user_data = user_db.find_one({"email": email})
+        user_id = user_data["_id"]
+        user_upd = user_db.find_one({"_id": user_id})
+        return render_template('user_profile.html', user_data=user_upd)
 
     return render_template('register.html', form=form)
 
-@app.route('/admin/signup/', methods=['GET', 'POST'])
+@app.route('/employer/signup/', methods=['GET', 'POST'])
 def admin_signup():
     form = AdminSignUpForm()
     if form.validate_on_submit():
         admin_email = {
             "email": form.email.data
         }
-        existing_admin = admin_db.find_one(admin_email)
+        existing_admin = employer_db.find_one(admin_email)
         if existing_admin:
             flash('This admin already exists please sign in!')
             return redirect(url_for('login'))
@@ -55,9 +57,9 @@ def admin_signup():
                      "password": hashed_password
                      }
 
-        admin_db.insert_one(admin_dict)
-        admin_data = admin_db.find()
-        return render_template('admin_profile.html', admin_data=admin_data)
+        employer_db.insert_one(admin_dict)
+        employer_data = employer_db.find()
+        return render_template('employer_profile.html', admin_data=employer_data)
     return render_template('admin_register.html', form=form)
 
 @app.route('/user/signin/', methods=['GET', 'POST'])
@@ -69,25 +71,24 @@ def signin():
         user_data = user_db.find_one({"email": email})
 
         if user_data and check_password(password, user_data['password']):
-            print(password, user_data['password'])
             return render_template('user_profile.html', user_data=user_data)
         else:
             error_msg = "Invalid email or password."
             return render_template('signin.html', form=form, error_msg=error_msg)
     return render_template('signin.html', form=form)
 
-@app.route('/admin/signin/', methods=['GET', 'POST'])
+@app.route('/employer/signin/', methods=['GET', 'POST'])
 def admin_signin():
     form = AdminSignInForm()
     if form.validate_on_submit():
         email = form.email.data
         password = form.password.data
-        admin_data = admin_db.find_one({"email": email})
+        employer_data = employer_db.find_one({"email": email})
 
-        if admin_data and check_password(password, admin_data['password']):
-            return render_template('admin_profile.html', admin_data=admin_data)
+        if employer_data and check_password(password, employer_data['password']):
+            return redirect(url_for('employer_profile'))
         else:
-            error_msg = "Admin user not found."
+            error_msg = "Employer not found."
         return render_template('admin_signin.html', form=form, error_msg=error_msg)
     return render_template('admin_signin.html', form=form)
 
@@ -102,15 +103,18 @@ def about():
 
 @app.route('/category/internships/')
 def internships():
-    return render_template('internships.html')
+    jobs = job_db.find({"type_of_vacancy": "Internship"})
+    return render_template('internships.html', jobs=jobs)
 
 @app.route('/category/fellowships/')
 def fellowships():
-    return render_template('fellowships.html')
+    jobs = job_db.find({"type_of_vacancy": "Fellowship"})
+    return render_template('fellowships.html', jobs=jobs)
 
 @app.route('/category/volunteer/')
 def volunteer():
-    return render_template('volunteer.html')
+    jobs = job_db.find({"type_of_vacancy": "Volunteer"})
+    return render_template('volunteer.html', jobs=jobs)
 
 @app.route('/employer/dashboard/')
 def employer_dashboard():
@@ -123,7 +127,7 @@ def post_job():
         job_posting = {
             'position_title': form.position_title.data,
             'contract_type': form.contract_type.data,
-            'working_codition': form.working_condition.data,
+            'working_condition': form.working_condition.data,
             'type_of_vacancy': form.type_of_vacancy.data,
             'organization_name': form.organization_name.data,
             'organization_description': form.organization_description.data,
@@ -234,7 +238,7 @@ def search_employees():
 
 @app.route('/employer/profile/')
 def employer_profile():
-    profile_data = admin_db.find()
+    profile_data = employer_db.find()
     return render_template('employer_profile.html', profile=profile_data)
 
 @app.route('/employer/settings/', methods=['GET', 'POST'])
@@ -244,8 +248,8 @@ def employer_settings():
         confirm_password = request.form.get('confirm_password')
         if new_password and new_password == confirm_password:
             hashed_password = hash_password(new_password)
-            admin_data = admin_db.find_one()
-            admin_db.update_one({'_id': admin_data["_id"]}, {'$set': {'password': hashed_password}})
+            admin_data = employer_db.find_one()
+            employer_db.update_one({'_id': admin_data["_id"]}, {'$set': {'password': hashed_password}})
             flash('Password updated successfully', 'success')
         else:
             flash('Passwords do not match', 'danger')
