@@ -86,4 +86,4 @@ We appreciate your contributions and look forward to working together to improve
 ## Contributors:
 **Ermiyas Teklehaymanot**: [Twitter](https://x.com/Ermi24et), [Linkedin](https://www.linkedin.com/in/ermi24et/)
 
-**Selomon Teshome**: [Twitter](), [Linkedin]()
+**Selomon Teshome**: [Twitter](https://x.com/Selomon51871765), [Linkedin](www.linkedin.com/in/selomon-teshome-14957218b)
